@@ -1,0 +1,30 @@
+<%= link_to 'Nouvelle Intervention', new_issue_intervention_path(@issue), class: 'icon icon-add'%>
+<table class="list">
+  <thead>
+  <tr>
+    <th>#</th>
+    <th>Batiment</th>
+    <th>Site</th>
+    <th>Nom demandeur</th>
+    <th>Date Intervention</th>
+    <th>Date réclamation</th>
+    <th>Travaux</th>
+    <th>Travaux terminé</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @issue.interventions.each do |intervention| %>
+  <tr>
+    <td><%= link_to intervention.id, issue_intervention_path(@issue, intervention) %></td>
+    <td><%= intervention.batiment %></td>
+    <td><%= intervention.site %></td>
+    <td><%= intervention.nom_demandeur %></td>
+    <td><%= format_date intervention.date_intevention %></td>
+    <td><%= format_date intervention.date_reclamation %></td>
+    <td><%= intervention.travaux %></td>
+    <td><%= intervention.travaux_termines? ? 'Oui' : 'Non'  %></td>
+  </tr>
+
+  <% end %>
+  </tbody>
+</table>

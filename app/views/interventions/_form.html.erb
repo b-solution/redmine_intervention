@@ -1,0 +1,130 @@
+<%= javascript_include_tag 'jSignature.js', plugin: 'redmine_intervention' %>
+<%= form_with(model: [@issue, intervention], local: true) do |form| %>
+  <% if intervention.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(intervention.errors.count, "error") %> prohibited this intervention from being saved:</h2>
+
+      <ul>
+        <% intervention.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <%= form.hidden_field :issue_id %>
+
+  <table class="list">
+    <thead>
+    <tr>
+      <th colspan="6"> Fiche Intervention N°</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td>Bâtiment</td>
+      <td><%= form.text_field :batiment %> </td>
+      <td>Site/Bureau</td>
+      <td><%= form.text_field :site %> </td>
+      <td>Nom de demandeur</td>
+      <td><%= form.text_field :nom_demandeur %></td>
+    </tr>
+    <tr>
+      <td>Date Réclamation</td>
+      <td><%= form.date_field :date_reclamation %></td>
+      <td>Date Intervention</td>
+      <td><%= form.date_field :date_intevention %></td>
+      <td>Equipe</td>
+      <td><%= form.text_field :equipe %></td>
+    </tr>
+    <tr>
+      <td>Travaux</td>
+      <td><%= form.radio_button :travaux_id, 1 %>Diagnostic</td>
+      <td><%= form.radio_button :travaux_id, 2 %>Entretien</td>
+      <td><%= form.radio_button :travaux_id, 3 %>Réparation</td>
+      <td><%= form.radio_button :travaux_id, 4 %>Instalation</td>
+      <td><%= form.radio_button :travaux_id, 5 %>Mise en service</td>
+    </tr>
+    </tbody>
+  </table>
+
+  <div>Détails de l'intervention</div>
+
+  <table class="list">
+    <thead><tr><th colspan='5'>Nature d'intervention: <%= @project.to_s %></th></tr></thead>
+    <tbody>
+    <tr>
+      <td colspan="5"> Description des travaux effectué:</td>
+    </tr>
+
+    <tr>
+      <td>
+        <%= form.text_area :description_travaux , rows: 6, style: 'width: 100%;' %>
+      </td>
+    </tr>
+
+     <tr>
+      <td colspan="5"> Fournitures: </td>
+    </tr>
+
+    <tr>
+      <td>
+        <%= form.text_area :founitures  , rows: 6, style: 'width: 100%;'%>
+      </td>
+    </tr>
+
+     <tr>
+      <td colspan="5"> Observation: </td>
+    </tr>
+
+    <tr>
+      <td>
+        <%= form.text_area :oberservation  , rows: 6, style: 'width: 100%;'%>
+      </td>
+    </tr>
+
+    </tbody>
+  </table>
+
+  <div class="field">
+    <%= form.label :travaux_termines %>
+    <%= form.radio_button :travaux_termines, true %> OUI
+
+    <%= form.radio_button :travaux_termines, false %>  NON
+
+  </div>
+
+
+  <div class="splitcontent">
+    Remarque:<br/>
+    <div class="splitcontentleft">
+      <%= form.text_area :remarque, rows: 6, style: 'width: 100%;' %>
+    </div>
+    <div class="splitcontentright">
+      <div class="field">
+        <div id="signature" style="<%= 'display: none' if @intervention.signature.present? %>" > </div>
+        <% if @intervention.signature.present? %>
+          <%= image_tag @intervention.signature %>
+          <% end %>
+        <%= form.text_area :signature, id: 'intervention_signature', style: "display: none" %>
+      </div>
+    </div>
+  </div>
+
+  <div class="actions">
+    <%= form.submit t('button_save'), class: 'intervention_submit' %>
+  </div>
+<% end %>
+
+<script>
+  $(document).ready(function() {
+    var $sigdiv = $("#signature")
+    $sigdiv.jSignature()
+    $('.intervention_submit').on('click', function(e){
+      e.preventDefault();
+      if($sigdiv.jSignature('getData', 'native').length > 0)
+        $('#intervention_signature').val($sigdiv.jSignature("getData"))
+      $(this).parents('form').submit()
+    })
+
+  })
+</script>

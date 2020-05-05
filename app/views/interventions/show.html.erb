@@ -1,0 +1,77 @@
+<div class="contextual">
+  <%= link_to t('button_edit'), edit_issue_intervention_path(@issue, @intervention), class: 'icon icon-edit'%>
+  <%= link_to t('button_delete'), issue_intervention_path(@issue, @intervention), method: :delete, class: 'icon icon-del', data: {confirm: t('text_are_you_sure')} %>
+ </div>
+<div class="box">
+
+<p>
+  <strong>Batiment:</strong>
+  <%= @intervention.batiment %>
+</p>
+
+<p>
+  <strong>Site:</strong>
+  <%= @intervention.site %>
+</p>
+
+<p>
+  <strong>Nom demandeur:</strong>
+  <%= @intervention.nom_demandeur %>
+</p>
+
+<p>
+  <strong>Date reclamation:</strong>
+  <%= @intervention.date_reclamation %>
+</p>
+
+<p>
+  <strong>Date intevention:</strong>
+  <%= @intervention.date_intevention %>
+</p>
+
+<p>
+  <strong>Equipe:</strong>
+  <%= @intervention.equipe %>
+</p>
+
+<p>
+  <strong>Travaux:</strong>
+  <%= @intervention.travaux %>
+</p>
+
+<p>
+  <strong>Nature intervention:</strong>
+  <%= @intervention.project.to_s %>
+</p>
+
+<p>
+  <strong>Description travaux:</strong>
+  <%= @intervention.description_travaux %>
+</p>
+
+<p>
+  <strong>Founitures:</strong>
+  <%= @intervention.founitures %>
+</p>
+
+<p>
+  <strong>Oberservation:</strong>
+  <%= @intervention.oberservation %>
+</p>
+
+<p>
+  <strong>Travaux termines:</strong>
+  <%= @intervention.travaux_termines %>
+</p>
+
+<p>
+  <strong>Remarque:</strong>
+  <%= @intervention.remarque %>
+</p>
+
+<p>
+  <strong style="display: block">Signature:</strong>
+  <%= image_tag @intervention.signature if  @intervention.signature.present? %>
+</p>
+</div>
+
