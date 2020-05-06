@@ -1,7 +1,7 @@
 class InterventionsController < ApplicationController
   before_action :find_issue
   before_action :set_intervention, only: [:show, :edit, :update, :destroy]
-
+  before_action :require_login, except: [:new, :create]
   # GET /interventions
   def index
     @interventions = @issue.interventions
@@ -14,6 +14,12 @@ class InterventionsController < ApplicationController
   # GET /interventions/new
   def new
     @intervention = @issue.interventions.first_or_initialize
+    if @intervention.new_record?
+      @intervention.batiment = @issue.custom_field_values.detect{|cfv| cfv.custom_field_id == 9 }&.value
+      @intervention.site = @issue.custom_field_values.detect{|cfv| cfv.custom_field_id == 14 }&.value
+      @intervention.date_reclamation = @issue.custom_field_values.detect{|cfv| cfv.custom_field_id == 13 }&.value
+      @intervention.nom_demandeur = @issue.custom_field_values.detect{|cfv| cfv.custom_field_id == 12 }&.value
+    end
     render_403 if @intervention.travaux_termines?
   end
 
